@@ -1,1 +1,25 @@
-.venv
+# Ignorar el directorio de caché de Python
+__pycache__/
+*.py[cod]
+
+# Ignorar archivos de entorno virtual
+venv/
+.env/
+.venv_root/
+
+# Ignorar archivos de configuración del IDE (por ejemplo, PyCharm, VSCode, etc.)
+.vscode/
+.idea/
+
+# Ignorar archivos de configuración de entorno y compilación
+*.egg-info/
+build/
+dist/
+__init__.py
+
+# Ignorar archivos temporales y de log
+*.log
+*.tmp
+.DS_Store  # MacOS
+
+scan_results.txt
