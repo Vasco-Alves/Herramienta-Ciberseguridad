@@ -3,9 +3,7 @@ __pycache__/
 *.py[cod]
 
 # Ignorar archivos de entorno virtual
-venv/
-.env/
-.venv_root/
+.venv/
 
 # Ignorar archivos de configuración del IDE (por ejemplo, PyCharm, VSCode, etc.)
 .vscode/

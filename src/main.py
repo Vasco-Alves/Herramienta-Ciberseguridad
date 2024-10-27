@@ -25,8 +25,8 @@ def clear_console():
 def show_menu():
     print("\n=== Herramienta de Ciberseguridad ===")
     print("1. Escaneo de Red Básico")
-    print("2. Fuzzing de HTTP (Próximamente)")
-    print("3. Ver Hosts Detectados")
+    print("2. Ver Hosts Detectados")
+    print("3. Fuzzing de HTTP (Próximamente)")
     if is_root():
         print("4. Ataque MITM (Próximamente)")
         print("5. Captura de Tráfico (Próximamente)")
@@ -48,7 +48,7 @@ def show_hosts():
 
 
 def run_scanner():
-    target = input("Introduce el objetivo de escaneo (IP o rango de IPs, ej. 192.168.1.0/24): ")
+    target = input("Introduce el objetivo de escaneo (IPs o rango de IPs): ")
     ports = input("Introduce el rango de puertos (por defecto 22-443): ")
     if not target:
         target = "192.168.1.0/24"
@@ -74,14 +74,20 @@ def run_scanner():
 
 
 def run_fuzzing():
-    url = input("Introduce la URL objetivo para el fuzzing (ej. http://localhost): ")
-    num_requests = input("Introduce el número de peticiones de fuzzing (por defecto 10): ")
-    if not num_requests.isdigit():
-        num_requests = 10
-    else:
-        num_requests = int(num_requests)
+    print("\n--- Funcionalidad de Ataque MITM no disponible ---")
+    print("Esta funcionalidad se implementará en futuras versiones.")
+    # url = input("Introduce la URL objetivo para el fuzzing (ej. http://localhost): ")
+    # dictionary_path = input("Introduce la ruta al archivo de diccionario (por defecto 'dictionary.txt'): ")
+    # num_requests = input("Introduce el número de peticiones de fuzzing (por defecto 10): ")
 
-    fuzzing.fuzz_http(url, num_requests)
+    # if not dictionary_path:
+    #     dictionary_path = "dictionary.txt"  # Valor por defecto si no se ingresa uno
+    # if not num_requests.isdigit():
+    #     num_requests = 10
+    # else:
+    #     num_requests = int(num_requests)
+
+    fuzzing.fuzz_http_with_dictionary(url, dictionary_path, num_requests)
 
 def run_mitm_attack():
     print("\n--- Funcionalidad de Ataque MITM no disponible ---")
@@ -104,9 +110,10 @@ def main():
                 print("\n--- Escaneo de Red Básico ---")
                 run_scanner()
             elif choice == "2":
-                print("\n--- Fuzzing de HTTP (Próximamente) ---")
-            elif choice == "3":
                 show_hosts()
+            elif choice == "3":
+                print("\n--- Fuzzing de HTTP ---")
+                run_fuzzing()
             elif choice == "4" and is_root():
                 print("\n--- Ataque de Man in the Middle ---")
                 run_mitm_attack()

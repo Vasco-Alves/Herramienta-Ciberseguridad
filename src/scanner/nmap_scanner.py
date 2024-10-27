@@ -64,7 +64,7 @@ def scan_network(target="192.168.1.0/24", ports="22-443", arguments="-sS"):
         ip = ip.strip()  # Eliminar espacios en blanco alrededor de las IPs
 
         print(
-            f"Ejecutando escaneo en {ip} con puertos {ports} y argumentos '{arguments}'..."
+            f"\nEjecutando escaneo en {ip} con puertos {ports} y argumentos '{arguments}'..."
         )
 
         # Realizar el escaneo con los argumentos adicionales proporcionados
@@ -76,7 +76,7 @@ def scan_network(target="192.168.1.0/24", ports="22-443", arguments="-sS"):
             return f"[!] Ocurrió un error inesperado: {str(e)}"
 
         # Mostrar el comando exacto ejecutado por Nmap
-        print(f"\nComando ejecutado: {nm.command_line()}")
+        print(f"Comando ejecutado: {nm.command_line()}")
 
         # Procesar y mostrar resultados del escaneo
         for host in nm.all_hosts():
@@ -91,7 +91,9 @@ def scan_network(target="192.168.1.0/24", ports="22-443", arguments="-sS"):
 
             # Mostrar sistema operativo si se usa -O
             if "osclass" in nm[host]:
-                scan_results += (f"{Fore.YELLOW}[+] Sistema operativo detectado:{Style.RESET_ALL}\n")
+                scan_results += (
+                    f"{Fore.YELLOW}[+] Sistema operativo detectado:{Style.RESET_ALL}\n"
+                )
                 for osclass in nm[host]["osclass"]:
                     scan_results += f"  - {osclass['osfamily']} ({osclass['osgen']}) - Precisión: {osclass['accuracy']}%\n"
 
@@ -105,9 +107,15 @@ def scan_network(target="192.168.1.0/24", ports="22-443", arguments="-sS"):
                     # Colorear según el estado del puerto
                     if port_info["state"] == "open":
                         service = nm[host][proto][port].get("name", "Unknown service")
-                        version = nm[host][proto][port].get("version", "Unknown version")
-                        scan_results += f"  Puerto: {Fore.GREEN}{port_info['port']}{Style.RESET_ALL}\tEstado: {Fore.GREEN}Abierto{Style.RESET_ALL}\n"
-                        scan_results += f"  Servicio: {Fore.CYAN}{service}{Style.RESET_ALL}\tVersión: {Fore.CYAN}{version}{Style.RESET_ALL}\n\n"
+                        version = nm[host][proto][port].get(
+                            "version", "Unknown version"
+                        )
+                        scan_results += (
+                            f"  Puerto: {Fore.GREEN}{port_info['port']:<10}{Style.RESET_ALL}"
+                            f" Estado: {Fore.GREEN}{'Abierto':<10}{Style.RESET_ALL}"
+                            f" Servicio: {Fore.CYAN}{service:<10}{Style.RESET_ALL}"
+                            f" Versión: {Fore.CYAN}{version:<10}{Style.RESET_ALL}\n"
+                        )
 
             # Añadir host detectado a la lista global
             hosts_discovered.append(host_info)
