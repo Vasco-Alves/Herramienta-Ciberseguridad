@@ -1,6 +1,7 @@
 import os
 from scanner import nmap_scanner
 from fuzzing import fuzzing
+from mitm import mitm_attack
 
 
 def is_root():
@@ -26,10 +27,9 @@ def show_menu():
     print("\n=== Herramienta de Ciberseguridad ===")
     print("1. Escaneo de Red Básico")
     print("2. Ver Hosts Detectados")
-    print("3. Fuzzing de HTTP (Próximamente)")
+    print("3. Fuzzing de HTTP")
     if is_root():
-        print("4. Ataque MITM (Próximamente)")
-        print("5. Captura de Tráfico (Próximamente)")
+        print("4. Ataque MITM")
     print("6. Salir")
     print("=====================================")
 
@@ -54,49 +54,64 @@ def run_scanner():
         target = "192.168.1.0/24"
     if not ports:
         ports = "22-443"
-    
+
     # Solicitar argumentos adicionales para Nmap
     print("\nIntroduce argumentos adicionales para Nmap (por defecto: '-sS') o deja vacío para un escaneo estándar.")
     extra_arguments = input("Argumentos adicionales: ")
     if not extra_arguments:
         extra_arguments = "-sS"  # Escaneo SYN por defecto
-    
+
     # Realizar el escaneo con los argumentos adicionales proporcionados
     scan_results = nmap_scanner.scan_network(target, ports, extra_arguments)
     print("\n--- Resultados del Escaneo ---")
     print(f"\n{scan_results}")
-    
+
     # Opción para guardar los resultados
     save_choice = input("¿Deseas guardar los resultados en un archivo? (s/n): ")
-    if save_choice.lower() == 's':
-        filename = input("Introduce el nombre del archivo (por defecto 'scan_results.txt'): ") or "scan_results.txt"
+    if save_choice.lower() == "s":
+        filename = (input("Introduce el nombre del archivo (por defecto 'scan_results.txt'): ") or "scan_results.txt")
         nmap_scanner.save_scan_results(scan_results, filename)
 
 
 def run_fuzzing():
-    print("\n--- Funcionalidad de Ataque MITM no disponible ---")
-    print("Esta funcionalidad se implementará en futuras versiones.")
-    # url = input("Introduce la URL objetivo para el fuzzing (ej. http://localhost): ")
-    # dictionary_path = input("Introduce la ruta al archivo de diccionario (por defecto 'dictionary.txt'): ")
-    # num_requests = input("Introduce el número de peticiones de fuzzing (por defecto 10): ")
+    url = input("Introduce la URL objetivo para el fuzzing (ej. http://localhost): ")
+    dictionary_path = input("Introduce la ruta al archivo de diccionario (por defecto 'dictionary.txt'): ")
+    num_requests = input("Introduce el número de peticiones de fuzzing (por defecto 10): ")
 
-    # if not dictionary_path:
-    #     dictionary_path = "dictionary.txt"  # Valor por defecto si no se ingresa uno
-    # if not num_requests.isdigit():
-    #     num_requests = 10
-    # else:
-    #     num_requests = int(num_requests)
+    if not dictionary_path:
+        dictionary_path = "dictionary.txt"
+    if not num_requests.isdigit():
+        num_requests = 10
+    else:
+        num_requests = int(num_requests)
 
-    fuzzing.fuzz_http_with_dictionary(url, dictionary_path, num_requests)
+    fuzzing.fuzz_http(url, dictionary_path, num_requests)
+
 
 def run_mitm_attack():
-    print("\n--- Funcionalidad de Ataque MITM no disponible ---")
-    print("Esta funcionalidad se implementará en futuras versiones.")
+    """
+    Ejecuta el ataque MITM (Man-in-the-Middle) con ARP spoofing.
+    """
+    print("\n--- Ataque Man-in-the-Middle (MITM) ---")
+    gateway_ip = input("Introduce la IP del gateway (router): ")
+    victim_ip = input("Introduce la IP de la víctima: ")
 
+    # Validar que ambas IPs sean válidas
+    if not gateway_ip or not victim_ip:
+        print("[!] Debes proporcionar las IPs del gateway y la víctima.")
+        return
 
-def capture_traffic():
-    print("\n--- Funcionalidad de Captura de Tráfico no disponible ---")
-    print("Esta funcionalidad se implementará en futuras versiones.")
+    # Comprueba si las IPs están bien escritas
+    if not nmap_scanner.validate_ip(gateway_ip) and not nmap_scanner.validate_ip(victim_ip):
+        print("[!] Las IPs no están bien definidas.")
+        return
+
+    print(f"[+] Preparando ataque MITM entre el gateway {gateway_ip} y la víctima {victim_ip}...")
+    try:
+        mitm_attack.mitm_attack(gateway_ip, victim_ip)
+
+    except KeyboardInterrupt:
+        print("[!] Ataque detenido por el usuario.")
 
 
 def main():
@@ -117,14 +132,13 @@ def main():
             elif choice == "4" and is_root():
                 print("\n--- Ataque de Man in the Middle ---")
                 run_mitm_attack()
-            elif choice == "5" and is_root():
-                capture_traffic()
             elif choice == "6":
                 print("\nSaliendo de la herramienta. ¡Hasta pronto!")
                 break
             else:
                 print("\nOpción no válida. Por favor, elige una opción del menú.")
             input("\nPresiona Enter para continuar...")  # Pausa antes de limpiar la pantalla
+
     except KeyboardInterrupt:
         print("\n\n[!] Aplicación interrumpida por el usuario. Saliendo...")
 

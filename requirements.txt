@@ -10,4 +10,5 @@ python-nmap==0.7.1
 requests==2.32.3
 scapy==2.6.0
 termcolor==2.4.0
+tqdm==4.67.1
 urllib3==2.2.3
