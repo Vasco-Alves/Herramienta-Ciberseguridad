@@ -11,8 +11,6 @@ Esta herramienta de ciberseguridad multiusos está diseñada para realizar tarea
 
 Esta herramienta está diseñada con fines educativos y debe usarse exclusivamente en entornos de prueba y con autorización.
 
----
-
 ## Instalación
 
 ### Requisitos
@@ -36,8 +34,6 @@ Esta herramienta está diseñada con fines educativos y debe usarse exclusivamen
     pip install -r requirements.txt
     ```
 
----
-
 ## Uso
 
 Para ejecutar el programa se recomienda crear un entorono virtual de python y ejecutar con privilegios a través del entorno.
@@ -45,8 +41,6 @@ Para ejecutar el programa se recomienda crear un entorono virtual de python y ej
 ```bash
 sudo python3 src/main.py
 ```
-
----
 
 ## Funcionalidades
 
