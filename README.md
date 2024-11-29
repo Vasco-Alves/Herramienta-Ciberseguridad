@@ -85,9 +85,3 @@ Archivo relacionado: `src/mitm/mitm_attack.py`
 Este módulo permite capturar tráfico de red en tiempo real mientras se realiza el ataque MITM. Guarda los paquetes en un archivo PCAP para su análisis posterior con herramientas como Wireshark.
 
 Archivo relacionado: src/traffic_capture/capture.py
-
----
-
-## Licencia
-
-Esta herramienta es de código abierto y está bajo la licencia **MIT**.
