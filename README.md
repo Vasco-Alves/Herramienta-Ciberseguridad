@@ -11,7 +11,6 @@ Esta herramienta de ciberseguridad multiusos está diseñada para realizar tarea
 
 Esta herramienta está diseñada con fines educativos y debe usarse exclusivamente en entornos de prueba y con autorización.
 
-
 ## Instalación
 
 ### Requisitos
@@ -34,7 +33,6 @@ Esta herramienta está diseñada con fines educativos y debe usarse exclusivamen
     ```bash
     pip install -r requirements.txt
     ```
-
 
 ## Uso
 
@@ -75,6 +73,8 @@ El módulo MITM realiza un ataque de suplantación ARP (ARP spoofing), engañand
 - Redirección de tráfico mediante habilitación de IP forwarding.
 
 Archivo relacionado: `src/mitm/mitm_attack.py`
+
+Para que el MITM funcione correctamente, acuerdate de activar el **ip fowarding**: `echo 1 > /proc/sys/net/ipv4/ip_forward`
 
 ### Captura de Tráfico
 
