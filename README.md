@@ -11,8 +11,6 @@ Esta herramienta de ciberseguridad multiusos está diseñada para realizar tarea
 
 Esta herramienta está diseñada con fines educativos y debe usarse exclusivamente en entornos de prueba y con autorización.
 
----
-
 ## Instalación
 
 ### Requisitos
@@ -36,8 +34,6 @@ Esta herramienta está diseñada con fines educativos y debe usarse exclusivamen
     pip install -r requirements.txt
     ```
 
----
-
 ## Uso
 
 Para ejecutar el programa se recomienda crear un entorono virtual de python y ejecutar con privilegios a través del entorno.
@@ -45,8 +41,6 @@ Para ejecutar el programa se recomienda crear un entorono virtual de python y ej
 ```bash
 sudo python3 src/main.py
 ```
-
----
 
 ## Funcionalidades
 
@@ -80,14 +74,10 @@ El módulo MITM realiza un ataque de suplantación ARP (ARP spoofing), engañand
 
 Archivo relacionado: `src/mitm/mitm_attack.py`
 
+Para que el MITM funcione correctamente, acuerdate de activar el **ip fowarding**: `echo 1 > /proc/sys/net/ipv4/ip_forward`
+
 ### Captura de Tráfico
 
 Este módulo permite capturar tráfico de red en tiempo real mientras se realiza el ataque MITM. Guarda los paquetes en un archivo PCAP para su análisis posterior con herramientas como Wireshark.
 
-Archivo relacionado: src/traffic_capture/capture.py
-
----
-
-## Licencia
-
-Esta herramienta es de código abierto y está bajo la licencia **MIT**.
+Archivo relacionado: `src/traffic_capture/capture.py`
