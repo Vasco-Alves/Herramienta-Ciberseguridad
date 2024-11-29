@@ -52,14 +52,14 @@ def scan_network(target="192.168.1.0/24", ports="22-443", arguments="-sS"):
     global hosts_discovered
     hosts_discovered.clear()  # Limpiar la lista antes de un nuevo escaneo
 
-    # Verificar entradas
+    # Verifica entradas
     if not validate_ip(target):
         return f"[!] Error: Una o más direcciones IP o rangos son inválidos: {target}"
     if not validate_ports(ports):
         return f"[!] Error: Rango de puertos inválido: {ports}"
 
     nm = nmap.PortScanner()
-    targets = target.split(",")  # Separar las IPs/rangos por comas
+    targets = target.split(",")  # Separa las IPs/rangos por comas
 
     scan_results = ""
     for ip in targets:

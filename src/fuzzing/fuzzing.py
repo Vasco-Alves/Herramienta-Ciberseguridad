@@ -7,6 +7,7 @@ from tqdm import tqdm
 def load_dictionary(file_path):
     """
     Carga palabras desde un archivo de diccionario.
+
     :param file_path: Ruta del archivo que contiene las palabras de fuzzing.
     :return: Lista de palabras del diccionario.
     """

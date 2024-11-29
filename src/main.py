@@ -24,17 +24,19 @@ def clear_console():
 
 
 def show_menu():
-    print("\n=== Herramienta de Ciberseguridad ===")
+    print("\n=== Herramienta de Ciberseguridad ===\n")
     print("1. Escaneo de Red Básico")
     print("2. Ver Hosts Detectados")
     print("3. Fuzzing de HTTP")
     if is_root():
         print("4. Ataque MITM")
     print("6. Salir")
-    print("=====================================")
 
 
 def show_hosts():
+    """
+    Muestra los hosts decubiertos con el escaneo.
+    """
     if len(nmap_scanner.hosts_discovered) == 0:
         print("\nNo se han detectado hosts aún. Realiza un escaneo primero.")
     else:
@@ -48,6 +50,9 @@ def show_hosts():
 
 
 def run_scanner():
+    """
+    Ejecuta el escaneo de red.
+    """
     target = input("Introduce el objetivo de escaneo (IPs o rango de IPs): ")
     ports = input("Introduce el rango de puertos (por defecto 22-443): ")
     if not target:
@@ -74,6 +79,9 @@ def run_scanner():
 
 
 def run_fuzzing():
+    """
+    Ejecuta el fuzzing por HTTP.
+    """
     url = input("Introduce la URL objetivo para el fuzzing (ej. http://localhost): ")
     dictionary_path = input("Introduce la ruta al archivo de diccionario (por defecto 'dictionary.txt'): ")
     num_requests = input("Introduce el número de peticiones de fuzzing (por defecto 10): ")
@@ -92,16 +100,14 @@ def run_mitm_attack():
     """
     Ejecuta el ataque MITM (Man-in-the-Middle) con ARP spoofing.
     """
-    print("\n--- Ataque Man-in-the-Middle (MITM) ---")
     gateway_ip = input("Introduce la IP del gateway (router): ")
     victim_ip = input("Introduce la IP de la víctima: ")
 
-    # Validar que ambas IPs sean válidas
     if not gateway_ip or not victim_ip:
         print("[!] Debes proporcionar las IPs del gateway y la víctima.")
         return
 
-    # Comprueba si las IPs están bien escritas
+    # Valida que ambas IPs sean válidas
     if not nmap_scanner.validate_ip(gateway_ip) and not nmap_scanner.validate_ip(victim_ip):
         print("[!] Las IPs no están bien definidas.")
         return
@@ -130,7 +136,7 @@ def main():
                 print("\n--- Fuzzing de HTTP ---")
                 run_fuzzing()
             elif choice == "4" and is_root():
-                print("\n--- Ataque de Man in the Middle ---")
+                print("\n--- Ataque Man-in-the-Middle ---")
                 run_mitm_attack()
             elif choice == "6":
                 print("\nSaliendo de la herramienta. ¡Hasta pronto!")
